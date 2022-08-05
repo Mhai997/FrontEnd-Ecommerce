@@ -1,0 +1,107 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Crear nueva marca</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formulario">
+          <!-- <form #CrearBrandDto="ngForm" (ngSubmit)="postMarca(CrearBrandDto.value)"> -->
+            <div class="form-group" >
+              <label for="name">Nombre: </label>
+              <input type="text" class="form-control" placeholder="Enter name" formControlName="name" [(ngModel)]="brand.name">
+              <div *ngIf="formulario.controls['name'].invalid && (formulario.controls['name'].dirty || formulario.controls['name'].touched)">
+                <small class="text-danger" *ngIf="formulario.controls['name'].errors?.['required']">
+                    El campo codigo es requerido
+                </small>
+                <small class="text-danger" *ngIf="formulario.controls['name'].errors?.['maxlength']">
+                    Longitud máxima: {{formulario.controls['id'].errors?.['maxlength'].requiredLength}}
+                </small>
+            </div>
+
+
+            </div>
+            <button type="button" class="btn btn-primary" (click)="postMarca()">Save changes</button>
+          </form>
+
+      </div>
+
+      </div>
+     
+    </div>
+  </div>
+
+
+<div class="card" style="width: 18rem;">
+
+  <div class="card-body" *ngFor="let brand of brands">
+    <ng-container *ngIf="brands.length > 0 else noData">
+    <img class="card-img-top" src="/assets/images/logo.png" alt="Card image cap">
+    <h5 class="card-title">{{brand.id}}</h5>
+    <p class="card-text">{{brand.name}}</p>
+    <button type="button" class="btn btn-primary" (click)="editBrand(brand.id, content)">Editar</button>
+    <button type="button" class="btn btn-primary" (click)="deleteBrand(brand.id)">Eliminar</button>
+
+    </ng-container>
+  </div>
+</div>
+
+
+
+<ng-template #noData>No existen datos</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Marca</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+
+
+    <form id="brandForm" [formGroup]="formulario" (ngSubmit)="updateBrand(content)">
+      <div class="form-group">
+          <label for="id">Código:</label>
+          <input type="text" formControlName="id" id="id" class="form-control"/>
+          <div *ngIf="formulario.controls['id'].invalid && (formulario.controls['id'].dirty || formulario.controls['id'].touched)">
+              <small class="text-danger" *ngIf="formulario.controls['id'].errors?.['required']">
+                  El campo codigo es requerido
+              </small>
+              <small class="text-danger" *ngIf="formulario.controls['id'].errors?.['maxlength']">
+                  Longitud máxima: {{formulario.controls['id'].errors?.['maxlength'].requiredLength}}
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="name">Descripción:</label>
+          <input type="text" formControlName="name" id="name" class="form-control"/>
+          <div *ngIf="formulario.controls['name'].invalid && (formulario.controls['name'].dirty || formulario.controls['name'].touched)">
+              <small class="text-danger" *ngIf="formulario.controls['name'].errors?.['required']">
+                  El campo codigo es requerido
+              </small>
+              <small class="text-danger" *ngIf="formulario.controls['name'].errors?.['pattern']">
+                  Solo se aceptan caracteres alfanumericos
+              </small>
+          </div>
+
+      </div>
+
+      <button class="btn btn-secondary" type="button">Cancelar</button>
+      <button class="btn btn-primary" type="submit" (click)="refrescar()">Enviar</button>
+  </form>
+
+  </div>
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div> -->
+</ng-template>
+
+
