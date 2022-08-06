@@ -16,9 +16,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BASE_URL } from './models/constanst';
 import { environment } from 'src/environments/environment';
 
-import { ProductTypeFormComponent } from './components/product-type/product-type-form/product-type-form.component';
-import { ProductTypeListComponent } from './components/product-type/product-type-list/product-type-list.component';
-import { ProductTypeModule } from './components/product-type/product-type.module';
+
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
@@ -34,7 +32,8 @@ import { HomeComponent } from './components/home/home.component';
     FooterComponent,
     LoginComponent,
     ProductComponent,
-    HomeComponent
+    HomeComponent,
+    ProductTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -42,8 +41,7 @@ import { HomeComponent } from './components/home/home.component';
     HttpClientModule,
     FormsModule,
     NgbModule,
-    ReactiveFormsModule,
-    ProductTypeModule
+    ReactiveFormsModule
   ],
   providers: [
     {
