@@ -34,7 +34,7 @@ import { HomeComponent } from './components/home/home.component';
     LoginComponent,
     ProductComponent,
     HomeComponent,
-    ProductTypeComponent,
+    ProductTypeComponent
   ],
   imports: [
     BrowserModule,

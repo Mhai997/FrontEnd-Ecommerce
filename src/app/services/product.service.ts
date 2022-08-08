@@ -66,18 +66,14 @@ export class ProductService {
     return this.http.post(apiUrl, data);
   }
 
-  // eliminarProduct(code: string){
-  //   let apiUrl= `${this.endpoint}/api/Product/${code}`;
-  //   this.http.delete(apiUrl)
-  //     .subscribe(
-  //       response => console.log("resultado eliminar brand"+response)
-  //     )
-
-  // }
   deleteProduct(id:string): Observable<any>{
     let apiUrl= `${this.endpoint}/api/Product/${id}`;
     return this.http.delete(apiUrl);
 
+  }
+  getMyCart(orderNew:string, data: any):Observable<any> {
+    let apiUrl= `${this.endpoint}/api/Order/Show/${orderNew}`;
+    return this.http.get(apiUrl,data);
   }
 
   updateProduct(data: any):Observable<any>{

@@ -9,9 +9,10 @@ import { GlobalParams } from 'src/app/models/globalParams';
 import { ProductService } from 'src/app/services/product.service';
 import { ProductDto } from 'src/app/models/productDto';
 import { HttpClient } from '@angular/common/http';
-import { orderDto } from 'src/app/models/orderDto';
+
 import { OrderProductDto } from 'src/app/models/OrderProductDto';
 import { Order } from 'src/app/models/Order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -21,8 +22,13 @@ import { Order } from 'src/app/models/Order';
 export class ProductComponent implements OnInit {
 
   products:Array<ProductDto> = [];
+  ordenesCreadas:Array<OrderProductDto> =[];
+  ordenes: Array<Order>=[];
   selectedProduct!:ProductDto;
   formulario!: FormGroup;
+  orderId = localStorage.getItem('orderId');
+  productoId!: string;
+  cantidad!: string;
 
   product : CrearProductDto;
   submitted = false;
@@ -37,7 +43,7 @@ export class ProductComponent implements OnInit {
 
 
   constructor(private http: HttpClient,private productService: ProductService,
-    private modalService: NgbModal,
+    private modalService: NgbModal,private router: Router,
 
 
     private formBuilder: FormBuilder) {
@@ -64,6 +70,9 @@ export class ProductComponent implements OnInit {
   get f() {
     return this.formulario.controls;
   }
+
+
+
 
   editProduct(code:string, content:any) {
     this.productService.getProductById(code).subscribe(
@@ -136,18 +145,26 @@ export class ProductComponent implements OnInit {
     this.addProduct.productId = productSelectedId;
     this.addProduct.productQuantity = parseInt(quantity);
     let orderId = localStorage.getItem('orderId');
-    debugger;
+
     if(orderId == null){
       this.productService.createProduct1().subscribe((response:any)=>{
         console.log('si entro a la peticion');
-        debugger;
+
         let responseOrder = response as Order;
         let orderNew = responseOrder.id;
         localStorage.setItem('orderId', orderNew);
-        console.log(this.addProduct);
+        console.log(typeof(this.addProduct));
+        //this.router.navigate(['/my-cart']);
 
         this.productService.createProduct2(orderNew,this.addProduct).subscribe((response: any)=>{
            console.log('si')
+        });
+
+        this.productService.getMyCart(orderNew,this.addProduct).subscribe((data:any)=>{
+          let productoId = this.addProduct.productId;
+          let cantidad = this.addProduct.productQuantity;
+          console.log(productoId);
+          console.log(cantidad);
 
         });
      });
