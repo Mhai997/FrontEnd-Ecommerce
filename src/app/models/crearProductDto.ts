@@ -1,4 +1,6 @@
 export interface CrearProductDto {
+  productQuantity: number;
+  productId: string;
   name: string;
   imageUrl: string;
   description: string;

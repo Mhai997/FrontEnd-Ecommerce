@@ -8,6 +8,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalParams } from 'src/app/models/globalParams';
 import { ProductService } from 'src/app/services/product.service';
 import { ProductDto } from 'src/app/models/productDto';
+import { HttpClient } from '@angular/common/http';
+import { orderDto } from 'src/app/models/orderDto';
+import { OrderProductDto } from 'src/app/models/OrderProductDto';
+import { Order } from 'src/app/models/Order';
 
 @Component({
   selector: 'app-product',
@@ -19,13 +23,27 @@ export class ProductComponent implements OnInit {
   products:Array<ProductDto> = [];
   selectedProduct!:ProductDto;
   formulario!: FormGroup;
+
   product : CrearProductDto;
   submitted = false;
+  GlobalService: any;
 
-  constructor(private productService: ProductService,
+  stock: number [] = [];
+  addProduct : OrderProductDto = {
+    productId: "",
+    productQuantity: 1
+
+  };
+
+
+  constructor(private http: HttpClient,private productService: ProductService,
     private modalService: NgbModal,
+
+
     private formBuilder: FormBuilder) {
-      this.product = {name:'', imageUrl:'', description: '',price:0,stock:0,productTypeId:'',brandId:''};
+      //this.product1 = {name:'', imageUrl:'', description: '',price:0,stock:0,productTypeId:'',brandId:''};
+      this.product = {name:'', imageUrl:'', description: '',price:0,stock:0,productTypeId:'',brandId:'',productId:'',productQuantity:0};
+
      }
 
   ngOnInit(): void {
@@ -113,4 +131,31 @@ export class ProductComponent implements OnInit {
     );
   }
 
-}
+
+  addProductCart(productSelectedId : string, quantity : string ='1' ){
+    this.addProduct.productId = productSelectedId;
+    this.addProduct.productQuantity = parseInt(quantity);
+    let orderId = localStorage.getItem('orderId');
+    debugger;
+    if(orderId == null){
+      this.productService.createProduct1().subscribe((response:any)=>{
+        console.log('si entro a la peticion');
+        debugger;
+        let responseOrder = response as Order;
+        let orderNew = responseOrder.id;
+        localStorage.setItem('orderId', orderNew);
+        console.log(this.addProduct);
+
+        this.productService.createProduct2(orderNew,this.addProduct).subscribe((response: any)=>{
+           console.log('si')
+
+        });
+     });
+
+    }
+    //this.location.back();
+  }
+
+  }
+
+

@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { BASE_URL } from '../models/constanst';
 import { GlobalParams } from '../models/globalParams';
 import { CrearProductDto } from '../models/crearProductDto';
+import { Order } from '../models/Order';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,17 @@ export class ProductService {
 
   createProduct(data: CrearProductDto){
     let apiUrl= `${this.endpoint}/api/Product`;
+
+    return this.http.post(apiUrl, data);
+  }
+
+  createProduct1(data?: any){
+    let apiUrl= `${this.endpoint}/api/Order`;
+
+    return this.http.post(apiUrl, data);
+  }
+  createProduct2(orderNew:string,data: any){
+    let apiUrl= `${this.endpoint}/api/Order/${orderNew}/Product`;
 
     return this.http.post(apiUrl, data);
   }
